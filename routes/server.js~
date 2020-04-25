@@ -1,0 +1,12 @@
+const serverController = new (require('../controllers/ServerController'))();
+const serverRouter = require('koa-router')({
+    prefix: '/server'
+});
+
+serverRouter.get('/', serverController.servers);
+serverRouter.get('/:id', serverController.server);
+serverRouter.post('/', serverController.addServer, serverController.servers);
+serverRouter.put('/:id', serverController.updateServer, serverController.server);
+serverRouter.delete('/:id', serverController.deleteServer, serverController.servers);
+
+module.exports = serverRouter;
