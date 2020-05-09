@@ -1,20 +1,20 @@
 const chpConnection = require('../database/CHPConnection');
 
 // Controller that interacts with database to retrieve data.
-class DataCenterController {
+class GamesController {
     constructor() {
         console.log('DataCenter Controller Initialized!');
     }
     
-    // Fetches all Data Centers
-    async dataCenters(ctx) {
-        console.log('Controller HIT: DataCenterController::dataCenters');
+    // Get all games played
+    async games(ctx) {
+        console.log('Controller HIT: DataCenterController::games');
         return new Promise((resolve, reject) => {
-            const query = 'SELECT * FROM L6_DataCenter';
+            const query = 'SELECT * FROM Game';
             
             chpConnection.query(query, (err, res) => {
                 if(err) {
-                    reject(`Error querying CHP.L6_DataCenter: ${err}`);
+                    reject(`Error querying CHP.Game: ${err}`);
                 }
                 
                 ctx.body = res;
@@ -29,16 +29,16 @@ class DataCenterController {
         });
     }
 
-    // Fetches a single Data Center
-    async dataCenter(ctx) {
-        console.log('Controller HIT: DataCenterController::dataCenter');
+    // Get a Game
+    async game(ctx) {
+        console.log('Controller HIT: DataCenterController::game');
         return new Promise((resolve, reject) => {
-            const query = 'SELECT * FROM L6_DataCenter WHERE name = ?;';
-            const dc = ctx.params.dataCenter;
+            const query = 'SELECT * Game WHERE game_id = ?;';
+            const g = ctx.params.game_id;
             
             chpConnection.query({
                 sql: query,
-                values: [dc]
+                values: [g]
             }, (err, res) => {
                 if(err) {
                     reject(err);
@@ -58,14 +58,14 @@ class DataCenterController {
         });
     }
 
-    // Add a new DataCenter
-    async addDataCenter(ctx, next) {
-        console.log('Controller HIT: DataCenterController::addDataCenter');
+    // Add a new Game
+    async addGame(ctx, next) {
+        console.log('Controller HIT: DataCenterController::addGame');
        return new Promise((resolve, reject) => {
-           const newDC = ctx.request.body;
+           const newG = ctx.request.body;
            chpConnection.query({
-               sql: 'INSERT INTO L6_DataCenter(name, city, state) VALUES (?, ?, ?);',
-               values: [newDC.name, newDC.city, newDC.state]
+               sql: 'INSERT INTO Game(game_id, playedOn, winner) VALUES (?, ?, ?);',
+               values: [newG.game_id, newG.playedOn, newG.winner]
            }, (err, res) => {
                if(err) {
                    reject(err);
@@ -85,20 +85,14 @@ class DataCenterController {
        });
     }
 
-    // Update a DataCenter
+    // Update a Game
     async updateDataCenter(ctx, next) {
-        console.log('Controller HIT: DataCenterController::updateDataCenter');
+        console.log('Controller HIT: DataCenterController::updateGame');
         return new Promise((resolve, reject) => {
-            const dc = ctx.request.body;
+            const g = ctx.request.body;
             chpConnection.query({
-                sql: `
-                    UPDATE L6_DataCenter 
-                    SET 
-                        city = ?,
-                        state = ?
-                    WHERE name = ?
-                    `,
-                values: [dc.city, dc.state, ctx.params.dataCenter]
+                sql: `UPDATE Game SET game_id = ?, playedOn = ?, winner = ? WHERE game_id = ?;`,
+                values: [g.game_is, g.playedOn, g.winner, ctx.params.game_id]
             }, (err, res) => {
                 if(err) {
                     reject(err);
@@ -117,12 +111,13 @@ class DataCenterController {
         });
     }
 
-    async deleteDataCenter(ctx, next) {
-        console.log('Controller HIT: DataCenterController::deleteDataCenter');
+    //delete a game
+    async deleteGame(ctx, next) {
+        console.log('Controller HIT: DataCenterController::deleteGame');
         return new Promise((resolve, reject) => {
             chpConnection.query({
-                sql: `DELETE FROM L6_DataCenter WHERE name = ?;`,
-                values: [ctx.params.dataCenter]
+                sql: `DELETE FROM Game WHERE game_id = ?;`,
+                values: [ctx.params.gameID]
             }, (err, res) => {
                 if(err) {
                     reject(err);
@@ -141,4 +136,4 @@ class DataCenterController {
     }
 }
 
-module.exports = DataCenterController;
+module.exports = GamesController;

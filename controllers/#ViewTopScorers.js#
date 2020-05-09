@@ -1,0 +1,31 @@
+const chpConnection = require('../database/CHPConnection');
+
+                                                                                                                                                                                   
+    //get the view i created for my database                                                                                                                                         
+async viewTopScorers(ctx) {                                                                                                                                                     
+        console.log('Controller HIT: DataCenterController::viewTopScorers');                                                                                                         
+        return new Promise((resolve, reject) => {                                                                                                                                    
+            const query = 'SELECT * FROM goals_view;';                                                                                                                               
+                                                                                                                                                                                     
+            chpConnection.query(query, (err, res) => {                                                                                                                               
+                if(err) {                                                                                                                                                            
+                    reject(`Error querying CHP.Scored: ${err}`);                                                                                                                     
+                }                                                                                                                                                                    
+                                                                                                                                                                                     
+                ctx.body = res;                                                                                                                                                      
+                ctx.status = 200;                                                                                                                                                    
+                                                                                                                                                                                     
+                resolve();                                                                                                                                                           
+            });                                                                                                                                                                      
+        })                                                                                                                                                                           
+         .catch(err => {                                                                                                                                                             
+            ctx.status = 500;                                                                                                                                                        
+            ctx.body = err;                                                                                                                                                          
+        });                                                                                                                                                                          
+    }                                                                                                                                                                                
+
+
+
+
+
+module.exports = ScoredController;

@@ -1,0 +1,12 @@
+const playersController = new (require('../controllers/PlayersController'))();
+const playersRouter = require('koa-router')({
+    prefix: '/players'
+});
+
+playersRouter.get('/', playersController.players);
+playersRouter.get('/:players', playersController.player);
+playersRouter.post('/', playersController.addPlayer, playersController.players);
+playersRouter.put('/:players', playersController.updatePlayer, playersController.player);
+playersRouter.delete('/:players', playersController.deletePlayer, playersController.players);
+
+module.exports = playersRouter;

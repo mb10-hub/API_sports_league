@@ -1,9 +1,9 @@
 const mySQL = require('mysql');
 
 const chpConnection = mySQL.createConnection({
-   debug: ,
-    host: '127.0.0.1',
-    port: '8006',
+    debug: true,
+    host: '127.x0.0.1',
+    port: '3306',
     user: 'barragan_cs355sp20',
     password: 'ba5404950',
     database: 'barragan_cs355sp20',

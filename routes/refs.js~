@@ -1,0 +1,12 @@
+const refsController = new (require('../controllers/RefsController'))();
+const refsRouter = require('koa-router')({
+    prefix: '/refID'
+});
+
+refsRouter.get('/', refsController.refs);
+refsRouter.get('/:refID', refsController.ref);
+refsRouter.post('/', refsController.addRef, refsController.refs);
+refsRouter.put('/:refID', refsController.updateRef, refsController.ref);
+refsRouter.delete('/:refID', refsController.deleteRef, refsController.refs);
+
+module.exports = refsRouter;
